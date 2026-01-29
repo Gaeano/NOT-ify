@@ -12,71 +12,66 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
+public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
 
     private Context context;
-    private List<imageItem> imageList;
-    private onitemClickListener listener;
+    private List<DiscogsResponse.Result> musicList;
 
-
-
-    public interface onitemClickListener{
-        void onItemClick(imageItem item);
-    }
-
-    public ImageAdapter (Context context, List<imageItem> imageList, onitemClickListener listener){
+    public ImageAdapter(Context context, List<DiscogsResponse.Result> musicList){
         this.context = context;
-        this.imageList = imageList;
-        this.listener = listener;
+        this.musicList = musicList;
     }
 
-    @NonNull
-    @Override
-    public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.itemimage, parent, false);
-        return new ImageViewHolder(view);
-    }
 
-    @Override
-    public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
-        imageItem currentItem = imageList.get(position);
 
-        holder.imageView.setImageResource(currentItem.getImageResource());
-        holder.titleTextView.setText(currentItem.getTitle());
-        holder.descriptionTextView.setText(currentItem.getDescription());
+   @NonNull
+   @Override
+   public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+       View view = LayoutInflater.from(context).inflate(R.layout.itemimage, parent, false);
+       return new ViewHolder(view);
+   }
 
-        // Set click listener
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onItemClick(currentItem);
-            }
-        });
+   @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+       DiscogsResponse.Result album = musicList.get(position);
+       holder.title.setText(album.title);
+
+       if (album.artist != null) {
+           holder.artist.setText(album.artist);
+       } else {
+           holder.artist.setText("Unknown Artist");
+       }
+
+       Glide.with(context)
+               .load(album.coverImage)
+               .placeholder(R.drawable.ic_launcher_background)
+               .into(holder.imageView);
+
     }
 
     @Override
     public int getItemCount() {
-        return imageList.size();
+        return musicList.size();
     }
 
-    // ViewHolder class
-    public static class ImageViewHolder extends RecyclerView.ViewHolder {
 
+    public static class ViewHolder extends  RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView titleTextView;
-        TextView descriptionTextView;
+        TextView title;
+        TextView artist;
 
-
-        public ImageViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
-            titleTextView = itemView.findViewById(R.id.title);
-            descriptionTextView = itemView.findViewById(R.id.desc);
+            title = itemView.findViewById(R.id.title);
+            artist = itemView.findViewById(R.id.desc);
         }
+
     }
-
-
 
 
 }
