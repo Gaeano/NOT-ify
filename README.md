@@ -8,18 +8,18 @@ NOT-ify is a mobile application designed to clone **Spotify** that allows users 
 4. Detailed Song Details
 5. Artist Discography Profiles
 ### Additional Features
-6. Music Randomizer - A feature that mimics *shuffling* through a record store bin. Allows users to discover music they've never heard of.
-7. Price Estimator Overlay - Since Discogs is a marketplace, this feature adds a small *market value* badge next to every album in the list, showing the median price for the physical vinyl.
+6. **_Music Randomizer_** - A feature that mimics *shuffling* through a record store bin. Allows users to discover music they've never heard of.
+7. **_Price Estimator Overlay_** - Since Discogs is a marketplace, this feature adds a small *market value* badge next to every album in the list, showing the median price for the physical vinyl.
 ## Technologies Used
-- Development Environment: Android Studio
-- Frontend: Native Android XML Layouts
-- Database: Firebase Firestore
-- Authentication: Firebase Authentication
-- API Integration:
+- **Development Environment**: Android Studio
+- **Frontend**: Native Android XML Layouts
+- **Database**: Firebase Firestore
+- **Authentication**: Firebase Authentication
+- **API Integration**:
     1. Data Source: Discogs API v2
     2. Networking Client: Retrofit v2
     3. JSON parsing: Gson
-- Media Playback: android-youtube-player library
-- Image Loading: Glide
+- **Media Playback**: android-youtube-player library
+- **Image Loading**: Glide
   
 
