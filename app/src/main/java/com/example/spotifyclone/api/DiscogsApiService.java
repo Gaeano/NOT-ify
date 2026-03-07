@@ -1,4 +1,4 @@
-package com.example.spotifyclone;
+package com.example.spotifyclone.api;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

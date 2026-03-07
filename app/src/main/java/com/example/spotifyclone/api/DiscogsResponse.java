@@ -1,4 +1,4 @@
-package com.example.spotifyclone;
+package com.example.spotifyclone.api;
 
 
 import com.google.gson.annotations.SerializedName;

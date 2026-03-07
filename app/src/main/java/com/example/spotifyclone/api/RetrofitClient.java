@@ -1,6 +1,5 @@
-package com.example.spotifyclone;
+package com.example.spotifyclone.api;
 
-import static androidx.compose.foundation.text.input.internal.LegacyCursorAnchorInfoBuilder_androidKt.build;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

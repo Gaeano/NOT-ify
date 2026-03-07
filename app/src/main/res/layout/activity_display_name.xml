@@ -2,10 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/blackBg">
+    android:background="@color/blackBg"
+    tools:context=".Authentication.displayName">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,16 +23,16 @@
             android:backgroundTint="@color/blackBg"
             android:text="&lt;"
             android:textColor="@color/greyBg"
-            android:layout_marginRight="95dp"
+            android:layout_marginRight="65dp"
             android:textSize="25sp"
             />
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/createaccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="Log in"
+            android:text="Create account"
             android:layout_gravity="center"
             android:textStyle="bold"
             />
@@ -39,74 +41,56 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="10dp"
-        android:orientation="vertical">
+        android:layout_marginRight="10dp">
 
         <TextView
-            android:id="@+id/emailPrompt"
+            android:id="@+id/NamePrompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enter Email"
+            android:text="What's your Name?"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_marginBottom="10dp"/>
+            android:textSize="20sp" />
+
 
         <EditText
-            android:id="@+id/enterEmail"
-            android:layout_width="357dp"
-            android:layout_height="49dp"
+            android:id="@+id/displayNameEditText"
+            android:layout_width="378dp"
+            android:layout_height="43dp"
+            android:background="@drawable/rounded_input_bg"
             android:ems="10"
+            android:textColor="@color/white"
             android:inputType="text"
-            android:background="@drawable/rounded_input_bg"
-            android:textColor="@color/white"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="4dp"
             />
 
         <TextView
-            android:id="@+id/passwordPrompt"
+            android:id="@+id/displaynamePrompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enter Password"
+            android:text="This appears on your spotify profile"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_marginBottom="10dp"/>
+            android:textSize="9sp" />
 
-        <EditText
-            android:id="@+id/enterPassword"
-            android:layout_width="353dp"
-            android:layout_height="49dp"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:background="@drawable/rounded_input_bg"
-            android:textColor="@color/white"
-            />
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
+
         <Button
-            android:id="@+id/loginbutton"
+            android:id="@+id/createBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
-            android:text="Login"
+            android:text="Create an account"
             android:layout_marginBottom="40dp"
             android:layout_gravity="center"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            />
-
+            android:textColor="@color/black"/>
 
     </LinearLayout>
-
-
-
-
-
-
 
 </LinearLayout>
