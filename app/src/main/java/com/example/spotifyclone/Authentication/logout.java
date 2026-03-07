@@ -1,4 +1,4 @@
-package com.example.spotifyclone;
+package com.example.spotifyclone.Authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
