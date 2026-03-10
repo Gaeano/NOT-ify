@@ -1,5 +1,6 @@
 package com.example.spotifyclone.Pages;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,13 +18,14 @@ import com.example.spotifyclone.R;
 import com.example.spotifyclone.api.DiscogsResponse;
 import com.example.spotifyclone.api.MusicDataCallback;
 import com.example.spotifyclone.api.MusicFetcher;
-import com.example.spotifyclone.imageItem;
+import com.example.spotifyclone.helpers.bottom_navigation;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePage extends AppCompatActivity {
+public class homePage extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ImageAdapter adapter;
@@ -40,7 +42,8 @@ public class HomePage extends AppCompatActivity {
 
         logOutButton = findViewById(R.id.logout);
 
-        recyclerView = findViewById(R.id.recyclerView);
+
+        recyclerView = findViewById(R.id.recentArtists);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -49,8 +52,13 @@ public class HomePage extends AppCompatActivity {
         adapter = new ImageAdapter(this, musicList);
         recyclerView.setAdapter(adapter);
 
+        BottomNavigationView botNav = findViewById(R.id.bottom_navigation_layout);
+        bottom_navigation.setupBottomNav(this, botNav, R.id.nav_home);
+
     loadMusic();
     logout(logOutButton);
+
+
 
 
     }
@@ -81,10 +89,12 @@ public class HomePage extends AppCompatActivity {
         logoutBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(HomePage.this, loginAcc.class);
+                Intent intent = new Intent(homePage.this, loginAcc.class);
                 startActivity(intent);
                 finish();
             }
         });
     }
+
+
 }

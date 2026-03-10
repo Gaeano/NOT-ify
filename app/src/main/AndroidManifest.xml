@@ -14,17 +14,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SpotifyClone">
         <activity
+            android:name=".Pages.searchPage"
+            android:exported="false" />
+        <activity
             android:name=".Authentication.displayName"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".Authentication.SignUp"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
-            android:name=".Pages.HomePage"
-            android:exported="false"></activity>
+            android:name=".Pages.homePage"
+            android:exported="false" />
         <activity
             android:name=".Authentication.signuplogin"
             android:exported="true">
@@ -36,10 +39,10 @@
         </activity>
         <activity
             android:name=".Authentication.loginAcc"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".Authentication.logout"
-            android:exported="false"></activity>
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -5,84 +5,88 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/blackBg">
+    android:theme="@style/Base.Theme.SpotifyClone">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
+        android:paddingHorizontal="10dp">
 
         <Button
             android:id="@+id/backBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:backgroundTint="@color/blackBg"
             android:text="&lt;"
             android:textColor="@color/greyBg"
-            android:layout_marginRight="95dp"
-            android:textSize="25sp"
-            />
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:layout_centerInParent="true"
             android:text="Log in"
-            android:layout_gravity="center"
-            android:textStyle="bold"
-            />
-    </LinearLayout>
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="20dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/emailPrompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="10dp"
             android:text="Enter Email"
             android:textColor="@color/white"
-            android:textStyle="bold"
             android:textSize="20sp"
-            android:layout_marginBottom="10dp"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/enterEmail"
-            android:layout_width="357dp"
+            android:layout_width="match_parent"
             android:layout_height="49dp"
-            android:ems="10"
-            android:inputType="text"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/rounded_input_bg"
-            android:textColor="@color/white"
-            android:layout_marginBottom="10dp"
-            />
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/passwordPrompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:text="Enter Password"
             android:textColor="@color/white"
-            android:textStyle="bold"
             android:textSize="20sp"
-            android:layout_marginBottom="10dp"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/enterPassword"
-            android:layout_width="353dp"
+            android:layout_width="match_parent"
             android:layout_height="49dp"
+            android:background="@drawable/rounded_input_bg"
             android:ems="10"
             android:inputType="textPassword"
-            android:background="@drawable/rounded_input_bg"
-            android:textColor="@color/white"
-            />
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColor="@color/white" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -92,21 +96,15 @@
             android:id="@+id/loginbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:text="Login"
-            android:layout_marginBottom="40dp"
             android:layout_gravity="center"
-            android:textStyle="bold"
+            android:layout_marginBottom="48dp"
+            android:backgroundTint="@color/white"
+            android:paddingStart="48dp"
+            android:paddingEnd="48dp"
+            android:text="Log in"
             android:textColor="@color/black"
-            />
-
+            android:textStyle="bold" />
 
     </LinearLayout>
-
-
-
-
-
-
 
 </LinearLayout>
