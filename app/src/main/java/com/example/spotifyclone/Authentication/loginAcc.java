@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,8 @@ public class loginAcc extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
+        ProgressBar loadingIndicator = findViewById(R.id.loadingIndicator);
+
         EditText emailEditText = findViewById(R.id.enterEmail);
         EditText passwordEditText = findViewById(R.id.enterPassword);
         Button loginBtn = findViewById(R.id.loginbutton);
@@ -30,7 +33,7 @@ public class loginAcc extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(loginAcc.this, signuplogin.class);
+                Intent intent = new Intent(loginAcc.this, openingPage.class);
                 startActivity(intent);
             }
         });
@@ -47,16 +50,17 @@ public class loginAcc extends AppCompatActivity {
                     return;
                 }
 
-                auth.signInWithEmailAndPassword(email, password);
-                FirebaseUser user = auth.getCurrentUser();
+                loadingIndicator.setVisibility(View.VISIBLE);
+                loginBtn.setEnabled(false);
 
-                if(user != null){
-                    Intent intent = new Intent(loginAcc.this, homePage.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(loginAcc.this, "Login Failed", Toast.LENGTH_SHORT).show();
-                }
-
+                auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Intent intent = new Intent(loginAcc.this, homePage.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(loginAcc.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
         });

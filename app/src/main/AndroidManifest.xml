@@ -29,7 +29,7 @@
             android:name=".Pages.homePage"
             android:exported="false" />
         <activity
-            android:name=".Authentication.signuplogin"
+            android:name=".Authentication.openingPage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

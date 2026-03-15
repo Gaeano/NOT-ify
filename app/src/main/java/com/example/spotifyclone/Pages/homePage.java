@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.spotifyclone.Authentication.loginAcc;
+import com.example.spotifyclone.Authentication.openingPage;
 import com.example.spotifyclone.BuildConfig;
 import com.example.spotifyclone.Adapter.ImageAdapter;
 import com.example.spotifyclone.R;
@@ -21,11 +22,15 @@ import com.example.spotifyclone.api.MusicFetcher;
 import com.example.spotifyclone.helpers.bottom_navigation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class homePage extends AppCompatActivity {
+
+    FirebaseAuth auth = FirebaseAuth.getInstance();
 
     //POP
     private RecyclerView popRecyclerView;
@@ -121,7 +126,10 @@ public class homePage extends AppCompatActivity {
         logoutBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(homePage.this, loginAcc.class);
+
+                auth.signOut();
+
+                Intent intent = new Intent(homePage.this, openingPage.class);
                 startActivity(intent);
                 finish();
             }
