@@ -38,12 +38,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
    @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
        DiscogsResponse.Result album = musicList.get(position);
-       holder.title.setText(album.title);
 
-       if (album.artist != null) {
-           holder.artist.setText(album.artist);
+       String fullTitle = album.title;
+
+       if (fullTitle != null && fullTitle.contains(" - ")) {
+           String[] parts = fullTitle.split(" - ", 2);
+           holder.title.setText(parts[1]);
        } else {
-           holder.artist.setText("Unknown Artist");
+           holder.title.setText(fullTitle);
        }
 
        Glide.with(context)
@@ -68,7 +70,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
             title = itemView.findViewById(R.id.title);
-            artist = itemView.findViewById(R.id.desc);
         }
 
     }

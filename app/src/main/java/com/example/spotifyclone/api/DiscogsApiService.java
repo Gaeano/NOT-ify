@@ -13,4 +13,16 @@ public interface DiscogsApiService {
             @Query("type") String type,
             @Query("token") String token
     );
+
+    @Headers("User-Agent: SpotifyCloneApp/1.0")
+    @GET("database/search")
+    Call<DiscogsResponse> searchByGenre(
+            @Query("q") String query,
+            @Query("type") String type,
+            @Query("token") String token,
+            @Query("per_page") int perPage,
+            @Query("genre") String genre,
+            @Query("sort") String sort,
+            @Query("sort_order") String sortOrder
+    );
 }

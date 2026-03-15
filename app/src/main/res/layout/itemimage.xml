@@ -4,7 +4,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
     android:clickable="true"
     android:focusable="true"
@@ -16,15 +15,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@color/blackBg"
         >
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:scaleType="centerCrop"
             android:contentDescription="Item Image"
-            android:background="#E0E0E0" />
+            android:background="@color/black" />
 
         <TextView
             android:id="@+id/title"
@@ -32,17 +32,12 @@
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:text="Title"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
+            android:textSize="20sp"
             android:paddingBottom="-20dp"
             />
 
-        <TextView
-            android:id="@+id/desc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:text="Description"
-            android:textColor="@color/black" />
+
 
     </LinearLayout>
 

@@ -27,10 +27,23 @@ import java.util.List;
 
 public class homePage extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
-    private ImageAdapter adapter;
+    //POP
+    private RecyclerView popRecyclerView;
+    private ImageAdapter popAdapter;
 
-    private List<DiscogsResponse.Result>musicList;
+    private List<DiscogsResponse.Result> popList = new ArrayList<>();
+
+    //ROCK
+    private RecyclerView rockRecyclerView;
+    private ImageAdapter rockAdapter;
+    private List<DiscogsResponse.Result> rockList = new ArrayList<>();
+
+    //EDM
+    private RecyclerView hiphopRecyclerView;
+    private ImageAdapter hiphopAdapter;
+    private List<DiscogsResponse.Result> hiphopList = new ArrayList<>();
+
+
 
     Button logOutButton;
     private static final String DiscogsToken = BuildConfig.DISCOGS_TOKEN;
@@ -42,36 +55,55 @@ public class homePage extends AppCompatActivity {
 
         logOutButton = findViewById(R.id.logout);
 
+        popRecyclerView = findViewById(R.id.popularPop);
+        popAdapter = new ImageAdapter(this, popList);
+        setUpRecyclers(popRecyclerView, popAdapter);
 
-        recyclerView = findViewById(R.id.recentArtists);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutManager);
 
-        musicList = new ArrayList<>();
+        rockRecyclerView = findViewById(R.id.popularRock);
+        rockAdapter = new ImageAdapter(this, rockList);
+        setUpRecyclers(rockRecyclerView, rockAdapter);
 
-        adapter = new ImageAdapter(this, musicList);
-        recyclerView.setAdapter(adapter);
+        hiphopRecyclerView = findViewById(R.id.popularHiphop);
+        hiphopAdapter = new ImageAdapter(this, hiphopList);
+        setUpRecyclers(hiphopRecyclerView, hiphopAdapter);
+
+
 
         BottomNavigationView botNav = findViewById(R.id.bottom_navigation_layout);
         bottom_navigation.setupBottomNav(this, botNav, R.id.nav_home);
 
-    loadMusic();
+    loadAllSections();
     logout(logOutButton);
-
-
-
 
     }
 
-    private void loadMusic(){
-        MusicFetcher musicfetch = new MusicFetcher();
+    private void setUpRecyclers(RecyclerView recycler, ImageAdapter adapter){
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recycler.setLayoutManager(layoutManager);
+        recycler.setAdapter(adapter);
+    }
 
-        musicfetch.fetchMusicData("popular", DiscogsToken, new MusicDataCallback(){
+    private void loadAllSections(){
+        MusicFetcher fetcher = new MusicFetcher();
+        loadMusic(fetcher, "Pop", popList, popAdapter);
+        loadMusic(fetcher, "Rock", rockList, rockAdapter);
+        loadMusic(fetcher, "Hip Hop", hiphopList, hiphopAdapter);
+    }
+
+
+    private void loadMusic(MusicFetcher fetcher, String genre, List<DiscogsResponse.Result> list, ImageAdapter adapter){
+
+        if (!list.isEmpty()){
+            return;
+        }
+
+        fetcher.fetchByGenre(genre, DiscogsToken, new MusicDataCallback(){
             @Override
             public void onSuccess(List<DiscogsResponse.Result> results) {
                 if (results != null){
-                    musicList.clear();
-                    musicList.addAll(results);
+                    list.clear();
+                    list.addAll(results);
                     adapter.notifyDataSetChanged();
                 }
 
@@ -79,7 +111,7 @@ public class homePage extends AppCompatActivity {
 
             @Override
             public void onError(String errorMessage) {
-                Snackbar.make(recyclerView, errorMessage, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(popRecyclerView, errorMessage, Snackbar.LENGTH_SHORT).show();
             }
 
         });
