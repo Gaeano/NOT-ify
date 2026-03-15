@@ -16,12 +16,12 @@ import com.example.spotifyclone.api.DiscogsResponse;
 
 import java.util.List;
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
+public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
     private Context context;
     private List<DiscogsResponse.Result> musicList;
 
-    public ImageAdapter(Context context, List<DiscogsResponse.Result> musicList){
+    public DataAdapter(Context context, List<DiscogsResponse.Result> musicList){
         this.context = context;
         this.musicList = musicList;
     }

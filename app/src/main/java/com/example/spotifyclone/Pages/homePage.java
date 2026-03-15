@@ -11,10 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.spotifyclone.Authentication.loginAcc;
 import com.example.spotifyclone.Authentication.openingPage;
 import com.example.spotifyclone.BuildConfig;
-import com.example.spotifyclone.Adapter.ImageAdapter;
+import com.example.spotifyclone.Adapter.DataAdapter;
 import com.example.spotifyclone.R;
 import com.example.spotifyclone.api.DiscogsResponse;
 import com.example.spotifyclone.api.MusicDataCallback;
@@ -23,7 +22,6 @@ import com.example.spotifyclone.helpers.bottom_navigation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,18 +32,18 @@ public class homePage extends AppCompatActivity {
 
     //POP
     private RecyclerView popRecyclerView;
-    private ImageAdapter popAdapter;
+    private DataAdapter popAdapter;
 
     private List<DiscogsResponse.Result> popList = new ArrayList<>();
 
     //ROCK
     private RecyclerView rockRecyclerView;
-    private ImageAdapter rockAdapter;
+    private DataAdapter rockAdapter;
     private List<DiscogsResponse.Result> rockList = new ArrayList<>();
 
     //EDM
     private RecyclerView hiphopRecyclerView;
-    private ImageAdapter hiphopAdapter;
+    private DataAdapter hiphopAdapter;
     private List<DiscogsResponse.Result> hiphopList = new ArrayList<>();
 
 
@@ -61,16 +59,16 @@ public class homePage extends AppCompatActivity {
         logOutButton = findViewById(R.id.logout);
 
         popRecyclerView = findViewById(R.id.popularPop);
-        popAdapter = new ImageAdapter(this, popList);
+        popAdapter = new DataAdapter(this, popList);
         setUpRecyclers(popRecyclerView, popAdapter);
 
 
         rockRecyclerView = findViewById(R.id.popularRock);
-        rockAdapter = new ImageAdapter(this, rockList);
+        rockAdapter = new DataAdapter(this, rockList);
         setUpRecyclers(rockRecyclerView, rockAdapter);
 
         hiphopRecyclerView = findViewById(R.id.popularHiphop);
-        hiphopAdapter = new ImageAdapter(this, hiphopList);
+        hiphopAdapter = new DataAdapter(this, hiphopList);
         setUpRecyclers(hiphopRecyclerView, hiphopAdapter);
 
 
@@ -83,7 +81,7 @@ public class homePage extends AppCompatActivity {
 
     }
 
-    private void setUpRecyclers(RecyclerView recycler, ImageAdapter adapter){
+    private void setUpRecyclers(RecyclerView recycler, DataAdapter adapter){
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recycler.setLayoutManager(layoutManager);
         recycler.setAdapter(adapter);
@@ -97,7 +95,7 @@ public class homePage extends AppCompatActivity {
     }
 
 
-    private void loadMusic(MusicFetcher fetcher, String genre, List<DiscogsResponse.Result> list, ImageAdapter adapter){
+    private void loadMusic(MusicFetcher fetcher, String genre, List<DiscogsResponse.Result> list, DataAdapter adapter){
 
         if (!list.isEmpty()){
             return;

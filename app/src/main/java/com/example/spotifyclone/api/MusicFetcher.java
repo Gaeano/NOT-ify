@@ -6,7 +6,7 @@ import retrofit2.Response;
 
 public class MusicFetcher{
 
-    public void fetchBygenre(String query, String token, MusicDataCallback callback) {
+    public void fetchSearched(String query, String token, MusicDataCallback callback) {
         DiscogsApiService discogsApiService = RetrofitClient.getService();
 
         Call<DiscogsResponse> call = discogsApiService.searchDatabase(query, "release", token);
