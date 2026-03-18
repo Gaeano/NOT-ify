@@ -129,7 +129,6 @@ public class displayName extends AppCompatActivity {
                                             }
                                         });
                             }
-
                         } else {
                             loadingIndicator.setVisibility(View.GONE);
                             createBtn.setEnabled(true);

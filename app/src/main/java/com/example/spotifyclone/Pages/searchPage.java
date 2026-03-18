@@ -1,8 +1,11 @@
 package com.example.spotifyclone.Pages;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -16,6 +19,7 @@ import com.example.spotifyclone.Adapter.DataAdapter;
 import com.example.spotifyclone.Adapter.SearchAdapter;
 import com.example.spotifyclone.BuildConfig;
 import com.example.spotifyclone.R;
+import com.example.spotifyclone.api.DiscogsApiService;
 import com.example.spotifyclone.api.DiscogsResponse;
 import com.example.spotifyclone.api.MusicDataCallback;
 import com.example.spotifyclone.api.MusicFetcher;
@@ -27,19 +31,21 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class searchPage extends AppCompatActivity {
+public class searchPage extends AppCompatActivity implements SearchAdapter.OnClickItemListener {
 
     LinearLayout recentSearchLayout;
     RecyclerView recentSearchesRecycler;
     RecyclerView searchRecycler;
     SearchAdapter searchAdapter;
 
-    private FirebaseFirestore db;
-    private FirebaseAuth auth;
+    private static final String TAG = "SearchActivity";
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     private FirebaseUser user;
-
 
 
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -107,6 +113,16 @@ public class searchPage extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onItemClick(int position){
+        DiscogsResponse.Result clickedItem = resultList.get(position);
+        addRecentSearchToDb(clickedItem);
+
+        Log.d("SearchActivity", "Click worked! Position" + position);
+
+        //navigate to page of the album
+    }
+
     private void setUpRecyclers(RecyclerView recycler, SearchAdapter adapter){
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recycler.setLayoutManager(layoutManager);
@@ -133,4 +149,39 @@ public class searchPage extends AppCompatActivity {
         });
     }
 
+
+
+    private void addRecentSearchToDb(DiscogsResponse.Result item){
+        user = auth.getCurrentUser();
+        if (user == null){
+            return;
+        }
+
+        String userId = user.getUid();
+
+        String title = item.title;
+        String imageUrl = item.coverImage;
+
+        Map<String, Object> recentSearch = new HashMap<>();
+        recentSearch.put("itemId", item.id);
+        recentSearch.put("title", title);
+        recentSearch.put("imageUrl", imageUrl);
+
+
+        db.collection("users")
+                .document(userId)
+                .collection("recentSearches")
+                .document(String.valueOf(item.id))
+                .set(recentSearch)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "Successfully added recent search to Firestore" + item.title);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error adding recent search to Firestore", e);
+                });
+    }
+
+
 }
+
+

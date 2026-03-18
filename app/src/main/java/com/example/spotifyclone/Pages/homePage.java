@@ -119,7 +119,6 @@ public class homePage extends AppCompatActivity {
 
         });
     }
-
     public void logout (Button logoutBtn){
         logoutBtn.setOnClickListener(new View.OnClickListener(){
             @Override

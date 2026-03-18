@@ -18,11 +18,16 @@ import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
 
-    private Context context;
+    private OnClickItemListener listener;
     private List<DiscogsResponse.Result> searchResults;
 
-    public SearchAdapter(Context context, List<DiscogsResponse.Result> resultsList){
-        this.context = context;
+
+    public interface OnClickItemListener{
+        void onItemClick(int position);
+    }
+
+    public SearchAdapter(OnClickItemListener listener, List<DiscogsResponse.Result> resultsList){
+        this.listener = listener;
         this.searchResults = resultsList;
     }
 
@@ -31,8 +36,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     @NonNull
     @Override
     public SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_search_result_layout, parent, false);
-        return new SearchViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_result_layout, parent, false);
+        return new SearchViewHolder(view, listener);
     }
 
     @Override
@@ -49,7 +54,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
             holder.title.setText(fullTitle);
         }
 
-        Glide.with(context)
+        Glide.with(holder.itemView.getContext())
                 .load(result.coverImage)
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(holder.imageView);
@@ -62,16 +67,30 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     }
 
 
-    public static class SearchViewHolder extends  RecyclerView.ViewHolder {
+    public static class SearchViewHolder extends  RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imageView;
         TextView title;
         TextView subtitle;
+        OnClickItemListener listener;
 
-        public SearchViewHolder(@NonNull View itemView) {
+
+        public SearchViewHolder(@NonNull View itemView, OnClickItemListener listener) {
             super(itemView);
+            this.listener = listener;
             imageView = itemView.findViewById(R.id.searchResultImage);
             title = itemView.findViewById(R.id.searchResultTitle);
             subtitle = itemView.findViewById(R.id.searchResultSubtitle);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getBindingAdapterPosition();
+
+            if (position != RecyclerView.NO_POSITION && listener != null) {
+                listener.onItemClick(position);
+            }
         }
 
     }
