@@ -8,6 +8,8 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,7 +30,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +45,8 @@ public class searchPage extends AppCompatActivity implements SearchAdapter.OnCli
     LinearLayout recentSearchLayout;
     RecyclerView recentSearchesRecycler;
     RecyclerView searchRecycler;
-    SearchAdapter searchAdapter;
+    SearchAdapter searchAdapter, recentSearchesAdapter;
+
 
     private static final String TAG = "SearchActivity";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -54,6 +60,7 @@ public class searchPage extends AppCompatActivity implements SearchAdapter.OnCli
     private static final String DiscogsToken = BuildConfig.DISCOGS_TOKEN;
 
     List<DiscogsResponse.Result> resultList = new ArrayList<>();
+    List<DiscogsResponse.Result> recentSearchesList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,14 +74,19 @@ public class searchPage extends AppCompatActivity implements SearchAdapter.OnCli
 
         SearchView searchView = findViewById(R.id.search_bar_container);
 
-        //set up recentSearches recylers and adapters
-        recentSearchesRecycler = findViewById(R.id.recent_searchesRecylerView);
 
         //set up searchResults
         searchRecycler = findViewById(R.id.searchResultsRecyclerView);
         searchAdapter = new SearchAdapter(this, resultList);
         setUpRecyclers(searchRecycler, searchAdapter);
 
+        //recent Searches
+        recentSearchesRecycler = findViewById(R.id.recent_searchesRecylerView);
+        recentSearchesAdapter = new SearchAdapter(this, recentSearchesList);
+        setUpRecyclers(recentSearchesRecycler, recentSearchesAdapter);
+
+
+        showRecentSearches(recentSearchesList, recentSearchesAdapter);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -91,6 +103,10 @@ public class searchPage extends AppCompatActivity implements SearchAdapter.OnCli
                 if (newText.trim().isEmpty()){
                     recentSearchLayout.setVisibility(View.VISIBLE);
                     searchRecycler.setVisibility(View.GONE);
+
+
+                    showRecentSearches(recentSearchesList, recentSearchesAdapter);
+
                 } else {
                     searchRunnable = new Runnable() {
                         @Override
@@ -149,7 +165,71 @@ public class searchPage extends AppCompatActivity implements SearchAdapter.OnCli
         });
     }
 
+    private void showRecentSearches(List<DiscogsResponse.Result> recentList, SearchAdapter adapter){
 
+        TextView nosearchesWarning = findViewById(R.id.recentSearchWarning);
+        ProgressBar progressBar = findViewById(R.id.recentSearchesProgressBar);
+
+
+        user = auth.getCurrentUser();
+        if (user == null){
+            Log.e(TAG, "user not logged in");
+            return;
+        }
+
+        String userId = user.getUid();
+        Log.d(TAG, "User email is: " + user.getEmail());
+
+        recentSearchLayout.setVisibility(View.VISIBLE);
+        searchRecycler.setVisibility(View.GONE);
+
+        progressBar.setVisibility(View.VISIBLE); // Show Spinner
+        recentSearchesRecycler.setVisibility(View.GONE); // Hide List
+        nosearchesWarning.setVisibility(View.GONE); // Hide Warning
+
+        db.collection("users")
+                .document(userId)
+                .collection("recentSearches")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .limit(10)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    progressBar.setVisibility(View.GONE);
+                    recentList.clear();
+                    Log.d(TAG, "Snapshot count: " + queryDocumentSnapshots.size()); // ADD THIS
+
+
+
+
+
+                    if (queryDocumentSnapshots.isEmpty()){
+                        nosearchesWarning.setVisibility(View.VISIBLE);
+                        recentSearchesRecycler.setVisibility(View.GONE);
+                    } else {
+                        nosearchesWarning.setVisibility(View.GONE);
+                        recentSearchesRecycler.setVisibility(View.VISIBLE);
+
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots){
+                            DiscogsResponse.Result newResult = new DiscogsResponse.Result();
+
+                                if (document.contains("itemId")){
+                                    newResult.id = document.getLong("itemId").intValue();
+                                }
+
+                                newResult.coverImage = document.getString("imageUrl");
+
+                                newResult.title = document.getString("title");
+
+                                recentList.add(newResult);
+                        }
+                    }
+
+                    adapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("SearchActivity", "Error fetching recent searches", e);
+                });
+    }
 
     private void addRecentSearchToDb(DiscogsResponse.Result item){
         user = auth.getCurrentUser();
@@ -166,6 +246,7 @@ public class searchPage extends AppCompatActivity implements SearchAdapter.OnCli
         recentSearch.put("itemId", item.id);
         recentSearch.put("title", title);
         recentSearch.put("imageUrl", imageUrl);
+        recentSearch.put("timestamp", FieldValue.serverTimestamp());
 
 
         db.collection("users")
