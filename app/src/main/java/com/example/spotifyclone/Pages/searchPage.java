@@ -2,6 +2,7 @@ package com.example.spotifyclone.Pages;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -21,6 +22,7 @@ import com.example.spotifyclone.Adapter.DataAdapter;
 import com.example.spotifyclone.Adapter.SearchAdapter;
 import com.example.spotifyclone.BuildConfig;
 import com.example.spotifyclone.R;
+import com.example.spotifyclone.albumDetailsPage;
 import com.example.spotifyclone.api.DiscogsApiService;
 import com.example.spotifyclone.api.DiscogsResponse;
 import com.example.spotifyclone.api.MusicDataCallback;
@@ -131,12 +133,23 @@ public class searchPage extends AppCompatActivity implements SearchAdapter.OnCli
 
     @Override
     public void onItemClick(int position){
-        DiscogsResponse.Result clickedItem = resultList.get(position);
+        DiscogsResponse.Result clickedItem;
+
+        if (recentSearchLayout.getVisibility() == View.VISIBLE) {
+            clickedItem = recentSearchesList.get(position);
+        } else {
+            clickedItem = resultList.get(position);
+        }
+
         addRecentSearchToDb(clickedItem);
 
         Log.d("SearchActivity", "Click worked! Position" + position);
 
-        //navigate to page of the album
+        Intent intent = new Intent(this, albumDetailsPage.class);
+        intent.putExtra("albumTitle",clickedItem.title);
+        intent.putExtra("masterId", clickedItem.id);
+        intent.putExtra("imageUrl", clickedItem.coverImage);
+        startActivity(intent);
     }
 
     private void setUpRecyclers(RecyclerView recycler, SearchAdapter adapter){

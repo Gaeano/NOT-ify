@@ -49,5 +49,27 @@ public class MusicFetcher{
             }
         });
     }
+
+    public void fetchTrackList(String token, int albumId, TracklistCallback callback) {
+        DiscogsApiService discogsApiService = RetrofitClient.getService();
+
+        Call<MasterReleaseResponse> call = discogsApiService.retrieveTrackList(albumId, token);
+
+        call.enqueue(new Callback<MasterReleaseResponse>() {
+            @Override
+            public void onResponse(Call<MasterReleaseResponse> call, Response<MasterReleaseResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body().tracklist);
+                } else {
+                    callback.onError("Error fetching music data" + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MasterReleaseResponse> call, Throwable t) {
+                callback.onError("Error fetching music data" + t.getMessage());
+            }
+        });
+    }
 }
 

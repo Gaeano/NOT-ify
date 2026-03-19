@@ -24,6 +24,9 @@ public class DiscogsResponse {
 
         @SerializedName("year")
         public String year;
+
+        @SerializedName("master_id")
+        public int masterId;
     }
 
 

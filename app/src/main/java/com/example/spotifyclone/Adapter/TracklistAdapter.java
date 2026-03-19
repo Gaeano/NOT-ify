@@ -13,21 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.spotifyclone.R;
 import com.example.spotifyclone.api.DiscogsResponse;
+import com.example.spotifyclone.api.MasterReleaseResponse;
 
 import java.util.List;
 
 public class TracklistAdapter extends RecyclerView.Adapter<TracklistAdapter.TrackViewHolder> {
 
-    private OnItemClickListener listener;
-    private List<DiscogsResponse.Result> resultList;
+    private List<MasterReleaseResponse.Track> resultList;
 
-    public TracklistAdapter(OnItemClickListener listener, List<DiscogsResponse.Result> resultList) {
-        this.listener = listener;
+    private String artistName;
+    public TracklistAdapter(List<MasterReleaseResponse.Track> resultList, String artistsName) {
         this.resultList = resultList;
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick( int position);
+        this.artistName = artistsName;
     }
 
 
@@ -35,15 +32,15 @@ public class TracklistAdapter extends RecyclerView.Adapter<TracklistAdapter.Trac
     @Override
     public TrackViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tracklist_card, parent, false);
-        return new TrackViewHolder(view, listener);
+        return new TrackViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TrackViewHolder holder, int position) {
-        DiscogsResponse.Result result = resultList.get(position);
+        MasterReleaseResponse.Track result = resultList.get(position);
 
         holder.songTitle.setText(result.title);
-        holder.artistName.setText(result.artist);
+        holder.artistName.setText(artistName);
 
 
 
@@ -54,29 +51,18 @@ public class TracklistAdapter extends RecyclerView.Adapter<TracklistAdapter.Trac
         return resultList.size();
     }
 
-    public static class TrackViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class TrackViewHolder extends RecyclerView.ViewHolder {
         TextView songTitle;
         TextView artistName;
 
-        OnItemClickListener listener;
 
-        public TrackViewHolder(@NonNull View itemView, OnItemClickListener listener) {
+        public TrackViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.listener = listener;
             songTitle = itemView.findViewById(R.id.song_title);
             artistName = itemView.findViewById(R.id.artist);
 
-            itemView.setOnClickListener(this);
 
         }
 
-        @Override
-        public void onClick(View v) {
-            int position = getBindingAdapterPosition();
-
-            if (position != RecyclerView.NO_POSITION && listener != null) {
-                listener.onItemClick(position);
-            }
-        }
     }
 }
