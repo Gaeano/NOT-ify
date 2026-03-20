@@ -16,23 +16,30 @@ import com.example.spotifyclone.api.DiscogsResponse;
 
 import java.util.List;
 
-public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
+public class HomePageAdapter extends RecyclerView.Adapter<HomePageAdapter.ViewHolder> {
 
-    private Context context;
     private List<DiscogsResponse.Result> musicList;
 
-    public DataAdapter(Context context, List<DiscogsResponse.Result> musicList){
-        this.context = context;
+    private OnClickItemListener listener;
+
+    public interface OnClickItemListener{
+        void onItemClick(DiscogsResponse.Result result);
+    }
+
+    public HomePageAdapter(OnClickItemListener listener, List<DiscogsResponse.Result> musicList){
+        this.listener = listener;
         this.musicList = musicList;
     }
+
+
 
 
 
    @NonNull
    @Override
    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-       View view = LayoutInflater.from(context).inflate(R.layout.itemimage, parent, false);
-       return new ViewHolder(view);
+       View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itemimage, parent, false);
+       return new ViewHolder(view, listener);
    }
 
    @Override
@@ -48,10 +55,11 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
            holder.title.setText(fullTitle);
        }
 
-       Glide.with(context)
+       Glide.with(holder.itemView.getContext())
                .load(album.coverImage)
                .placeholder(R.drawable.ic_launcher_background)
                .into(holder.imageView);
+
 
     }
 
@@ -61,15 +69,29 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     }
 
 
-    public static class ViewHolder extends  RecyclerView.ViewHolder {
+    public  class ViewHolder extends  RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView imageView;
         TextView title;
-        TextView artist;
 
-        public ViewHolder(@NonNull View itemView) {
+        OnClickItemListener listener;
+
+
+        public ViewHolder(@NonNull View itemView, OnClickItemListener listener) {
             super(itemView);
+            this.listener = listener;
             imageView = itemView.findViewById(R.id.imageView);
             title = itemView.findViewById(R.id.title);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int pos = getBindingAdapterPosition();
+
+            if (pos != RecyclerView.NO_POSITION && listener != null){
+                listener.onItemClick(musicList.get(pos));
+            }
         }
 
     }

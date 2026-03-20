@@ -1,5 +1,7 @@
 package com.example.spotifyclone.api;
 
+import android.util.Log;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -15,8 +17,10 @@ public class MusicFetcher{
             @Override
             public void onResponse(Call<DiscogsResponse> call, Response<DiscogsResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    Log.d("MusicFetcher", "Response successful");
                     callback.onSuccess(response.body().results);
                 } else {
+                    Log.d("MusicFetcher", "Response not successful");
                     callback.onError("Error fetching music data");
                 }
             }

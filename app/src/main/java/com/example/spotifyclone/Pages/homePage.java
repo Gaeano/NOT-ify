@@ -3,6 +3,7 @@ package com.example.spotifyclone.Pages;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -13,37 +14,36 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.spotifyclone.Authentication.openingPage;
 import com.example.spotifyclone.BuildConfig;
-import com.example.spotifyclone.Adapter.DataAdapter;
+import com.example.spotifyclone.Adapter.HomePageAdapter;
 import com.example.spotifyclone.R;
 import com.example.spotifyclone.api.DiscogsResponse;
 import com.example.spotifyclone.api.MusicDataCallback;
 import com.example.spotifyclone.api.MusicFetcher;
 import com.example.spotifyclone.helpers.bottom_navigation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class homePage extends AppCompatActivity {
+public class homePage extends AppCompatActivity implements HomePageAdapter.OnClickItemListener {
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
 
     //POP
     private RecyclerView popRecyclerView;
-    private DataAdapter popAdapter;
+    private HomePageAdapter popAdapter;
 
     private List<DiscogsResponse.Result> popList = new ArrayList<>();
 
     //ROCK
     private RecyclerView rockRecyclerView;
-    private DataAdapter rockAdapter;
+    private HomePageAdapter rockAdapter;
     private List<DiscogsResponse.Result> rockList = new ArrayList<>();
 
     //EDM
     private RecyclerView hiphopRecyclerView;
-    private DataAdapter hiphopAdapter;
+    private HomePageAdapter hiphopAdapter;
     private List<DiscogsResponse.Result> hiphopList = new ArrayList<>();
 
 
@@ -59,16 +59,16 @@ public class homePage extends AppCompatActivity {
         logOutButton = findViewById(R.id.logout);
 
         popRecyclerView = findViewById(R.id.popularPop);
-        popAdapter = new DataAdapter(this, popList);
+        popAdapter = new HomePageAdapter(this, popList);
         setUpRecyclers(popRecyclerView, popAdapter);
 
 
         rockRecyclerView = findViewById(R.id.popularRock);
-        rockAdapter = new DataAdapter(this, rockList);
+        rockAdapter = new HomePageAdapter(this, rockList);
         setUpRecyclers(rockRecyclerView, rockAdapter);
 
         hiphopRecyclerView = findViewById(R.id.popularHiphop);
-        hiphopAdapter = new DataAdapter(this, hiphopList);
+        hiphopAdapter = new HomePageAdapter(this, hiphopList);
         setUpRecyclers(hiphopRecyclerView, hiphopAdapter);
 
 
@@ -81,21 +81,34 @@ public class homePage extends AppCompatActivity {
 
     }
 
-    private void setUpRecyclers(RecyclerView recycler, DataAdapter adapter){
+    @Override
+    public void onItemClick(DiscogsResponse.Result result) {
+
+        Intent intent = new Intent(this, albumDetailsPage.class);
+        Log.d("HomePage", "Item clicked title: " + result.title);
+        intent.putExtra("albumTitle", result.title);
+        intent.putExtra("masterId", result.masterId);
+        intent.putExtra("imageUrl", result.coverImage);
+        startActivity(intent);
+    }
+
+    private void setUpRecyclers(RecyclerView recycler, HomePageAdapter adapter){
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        Log.d("HomePage", "Setting up recycler view...");
         recycler.setLayoutManager(layoutManager);
         recycler.setAdapter(adapter);
     }
 
     private void loadAllSections(){
         MusicFetcher fetcher = new MusicFetcher();
+        Log.d("HomePage", "Loading music sections data...");
         loadMusic(fetcher, "Pop", popList, popAdapter);
         loadMusic(fetcher, "Rock", rockList, rockAdapter);
         loadMusic(fetcher, "Hip Hop", hiphopList, hiphopAdapter);
     }
 
 
-    private void loadMusic(MusicFetcher fetcher, String genre, List<DiscogsResponse.Result> list, DataAdapter adapter){
+    private void loadMusic(MusicFetcher fetcher, String genre, List<DiscogsResponse.Result> list, HomePageAdapter adapter){
 
         if (!list.isEmpty()){
             return;
@@ -105,6 +118,7 @@ public class homePage extends AppCompatActivity {
             @Override
             public void onSuccess(List<DiscogsResponse.Result> results) {
                 if (results != null){
+                    Log.d("HomePage", "Loaded " + results.size() + " items for genre: " + genre);
                     list.clear();
                     list.addAll(results);
                     adapter.notifyDataSetChanged();
@@ -114,7 +128,8 @@ public class homePage extends AppCompatActivity {
 
             @Override
             public void onError(String errorMessage) {
-                Snackbar.make(popRecyclerView, errorMessage, Snackbar.LENGTH_SHORT).show();
+
+                Log.e("HomePage", "Error loading data: " + errorMessage);
             }
 
         });
@@ -125,7 +140,7 @@ public class homePage extends AppCompatActivity {
             public void onClick(View v){
 
                 auth.signOut();
-
+                Log.d("HomePage", "User logged out");
                 Intent intent = new Intent(homePage.this, openingPage.class);
                 startActivity(intent);
                 finish();

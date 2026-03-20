@@ -1,7 +1,5 @@
 package com.example.spotifyclone.Pages;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,12 +16,9 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.spotifyclone.Adapter.DataAdapter;
 import com.example.spotifyclone.Adapter.SearchAdapter;
 import com.example.spotifyclone.BuildConfig;
 import com.example.spotifyclone.R;
-import com.example.spotifyclone.albumDetailsPage;
-import com.example.spotifyclone.api.DiscogsApiService;
 import com.example.spotifyclone.api.DiscogsResponse;
 import com.example.spotifyclone.api.MusicDataCallback;
 import com.example.spotifyclone.api.MusicFetcher;

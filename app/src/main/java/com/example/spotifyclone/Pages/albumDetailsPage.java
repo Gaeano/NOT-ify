@@ -1,4 +1,4 @@
-package com.example.spotifyclone;
+package com.example.spotifyclone.Pages;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.spotifyclone.Adapter.TracklistAdapter;
+import com.example.spotifyclone.BuildConfig;
+import com.example.spotifyclone.R;
 import com.example.spotifyclone.api.MasterReleaseResponse;
 import com.example.spotifyclone.api.MusicFetcher;
 import com.example.spotifyclone.api.TracklistCallback;
