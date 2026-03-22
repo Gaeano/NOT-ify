@@ -59,7 +59,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <ImageView
+                <ImageButton
+                    android:id="@+id/music_randomizer"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
                     android:background="@android:color/transparent"

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,12 +24,13 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class homePage extends AppCompatActivity implements HomePageAdapter.OnClickItemListener {
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
 
-    private ImageButton settingsBtn;
+    private ImageButton settingsBtn, musicRandomizerBtn;
 
     //POP
     private RecyclerView popRecyclerView;
@@ -56,6 +58,11 @@ public class homePage extends AppCompatActivity implements HomePageAdapter.OnCli
         setContentView(R.layout.homepage);
 
         settingsBtn = findViewById(R.id.settingsBtn);
+        musicRandomizerBtn = findViewById(R.id.music_randomizer);
+
+        musicRandomizerBtn.setOnClickListener(v -> {
+            randomizerFeature();
+        });
 
 
         popRecyclerView = findViewById(R.id.popularPop);
@@ -135,6 +142,43 @@ public class homePage extends AppCompatActivity implements HomePageAdapter.OnCli
                 Log.e("HomePage", "Error loading data: " + errorMessage);
             }
 
+        });
+    }
+
+    private void randomizerFeature(){
+        Toast.makeText(this, "Shuffling...", Toast.LENGTH_SHORT).show();
+
+        String[] genres = {"Rock", "Pop", "Jazz", "Hip Hop", "Electronic", "1980", "1999", "2010", "Love", "Night"};
+
+        int randomIndex = new Random().nextInt(genres.length);
+        String searchQuery = genres[randomIndex];
+
+        MusicFetcher fetcher = new MusicFetcher();
+        fetcher.fetchSearched(searchQuery, DiscogsToken, new MusicDataCallback() {
+            @Override
+            public void onSuccess(List<DiscogsResponse.Result> results) {
+
+                if(results != null && !results.isEmpty()){
+                    int randomAlbumIndex = new Random().nextInt(results.size());
+                    DiscogsResponse.Result random = results.get(randomAlbumIndex);
+
+
+                    Intent intent = new Intent(homePage.this, albumDetailsPage.class);
+                    intent.putExtra("albumTitle", random.title);
+                    intent.putExtra("masterId", random.id);
+                    intent.putExtra("imageUrl", random.coverImage);
+                    intent.putExtra("type", random.type);
+                    startActivity(intent);
+                } else {
+                    Log.e("HomePage", "No results found for the random genre.");
+                }
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("HomePage", "Error loading random data: " + errorMessage);
+            }
         });
     }
 
