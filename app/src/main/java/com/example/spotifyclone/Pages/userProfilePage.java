@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,50 +28,61 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.List;
 
-public class libraryPage extends AppCompatActivity implements LibraryAdapter.OnItemClickListenerLib {
+public class userProfilePage extends AppCompatActivity implements LibraryAdapter.OnItemClickListenerLib {
+
+    private Button backBtn;
+    private ImageButton settingsBtn;
+
+    private TextView displayName, noLibraryText;
 
     private RecyclerView libraryRecycler;
-    private ImageButton userProfileButton;
-     private LibraryAdapter adapter;
+    private LibraryAdapter adapter;
+    private ProgressBar loadingIndicator;
 
-     private ProgressBar loadingIndicator;
+    private List<DiscogsResponse.Result> resultList = new ArrayList<>();
 
-     private TextView noLibraryText;
-     private List<DiscogsResponse.Result> resultList = new ArrayList<>();
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private FirebaseUser user = auth.getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_library_page);
+        setContentView(R.layout.activity_user_library_page);
 
-        userProfileButton = findViewById(R.id.user_profile);
-
-        userProfileButton.setOnClickListener(v -> {
-            Intent intent = new Intent(libraryPage.this, userProfilePage.class);
-            startActivity(intent);
-        });
-
-        //set up bottomNav
+        //set up navBar
         BottomNavigationView botNav = findViewById(R.id.bottom_navigation_layout);
         bottom_navigation.setupBottomNav(this, botNav, R.id.nav_library);
 
-        //set up recyclerView and adapter
-        libraryRecycler = findViewById(R.id.libraryRecyclerView);
+        //set up recycler and adapter
+        libraryRecycler = findViewById(R.id.library_recycler_view);
+        adapter = new LibraryAdapter(this, resultList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         libraryRecycler.setLayoutManager(layoutManager);
-        adapter = new LibraryAdapter(this, resultList);
         libraryRecycler.setAdapter(adapter);
 
+        displayName= findViewById(R.id.display_name);
+        noLibraryText = findViewById(R.id.no_library_prompt);
         loadingIndicator = findViewById(R.id.loading_indicator);
-        noLibraryText = findViewById(R.id.noLibraryPrompt);
 
+        //set up buttons
+        backBtn = findViewById(R.id.back_btn);
+        settingsBtn = findViewById(R.id.settings_btn);
+
+
+        displayName.setText(user.getDisplayName());
         populateLibrary();
+
+
+        backBtn.setOnClickListener(v -> finish());
+
+
+
 
     }
 
     @Override
-    public void onItemClick(int position){
+    public void onItemClick(int position) {
         Intent intent = new Intent(this, albumDetailsPage.class);
         intent.putExtra("albumTitle", resultList.get(position).title);
         intent.putExtra("masterId", resultList.get(position).id);
@@ -79,10 +91,10 @@ public class libraryPage extends AppCompatActivity implements LibraryAdapter.OnI
     }
 
 
+
     private void populateLibrary(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser user = auth.getCurrentUser();
+
 
         if (user != null) {
             String userId = user.getUid();
@@ -107,7 +119,7 @@ public class libraryPage extends AppCompatActivity implements LibraryAdapter.OnI
                                 result.coverImage = document.getString("imageUrl");
                                 result.title = document.getString("title");
 
-                                Log.d("LibraryPage", "Result: " + result.title);
+                                Log.d("userProfilePage", "Result: " + result.title);
                                 resultList.add(result);
 
                             }
@@ -121,8 +133,9 @@ public class libraryPage extends AppCompatActivity implements LibraryAdapter.OnI
                         noLibraryText.setVisibility(View.VISIBLE);
                         libraryRecycler.setVisibility(View.GONE);
 
-                        Log.e("LibraryPage", "Error getting documents: ", e);
+                        Log.e("userProfilePage", "Error getting documents: ", e);
                     });
         }
     }
+
 }

@@ -32,7 +32,7 @@ public class bottom_navigation {
             } else if (itemId == R.id.nav_library) {
                 Intent intent = new Intent(context, libraryPage.class);
                 context.startActivity(intent);
-                context.setTitle("Library");
+                context.overridePendingTransition(0, 0);
                 return true;
             }
             return false;
