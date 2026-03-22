@@ -235,6 +235,7 @@ public class searchPage extends AppCompatActivity implements SearchAdapter.OnCli
                     adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> {
+
                     Log.e("SearchActivity", "Error fetching recent searches", e);
                 });
     }

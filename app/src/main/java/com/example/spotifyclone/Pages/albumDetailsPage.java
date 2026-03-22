@@ -124,12 +124,6 @@ public class albumDetailsPage extends AppCompatActivity {
         trackListRecycler.setAdapter(songListAdapter);
 
         populateTrackList(new MusicFetcher(), songListAdapter, songList, masterId);
-
-
-        if(songList.isEmpty()){
-            loadingIcon.setVisibility(View.GONE);
-            noResultPrompt.setVisibility(View.VISIBLE);
-        }
         //check if album is saved
         checkAlbumIfSaved(favoriteBtn, masterId);
 
@@ -150,6 +144,7 @@ public class albumDetailsPage extends AppCompatActivity {
                 if (results != null) {
                     loadingIcon.setVisibility(View.GONE);
                     trackListRecycler.setVisibility(View.VISIBLE);
+                    noResultPrompt.setVisibility(View.GONE);
                     Log.d("album_details_activity", "Track list fetched successfully");
                     trackList.clear();
                     trackList.addAll(results);

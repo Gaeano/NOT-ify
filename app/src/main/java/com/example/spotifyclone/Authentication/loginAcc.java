@@ -58,6 +58,8 @@ public class loginAcc extends AppCompatActivity {
                         Intent intent = new Intent(loginAcc.this, homePage.class);
                         startActivity(intent);
                     } else {
+                        loadingIndicator.setVisibility(View.GONE);
+                        loginBtn.setEnabled(true);
                         Toast.makeText(loginAcc.this, "Login Failed", Toast.LENGTH_SHORT).show();
                     }
                 });
