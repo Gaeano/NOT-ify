@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Pages.libraryPage">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_nav_container"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/library_header"
+                android:layout_width="match_parent"
+                android:layout_marginTop="40dp"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <Button
+                    android:id="@+id/back_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:backgroundTint="@color/blackBg"
+                    android:text="&lt;"
+                    android:textColor="@color/greyBg"
+                    android:textSize="25sp" />
+
+                <ImageButton
+                    android:id="@+id/settings_btn"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/three_menu_dots_24px" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/profile_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/userprofile" />
+
+            <TextView
+                android:id="@+id/display_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="32dp"
+                android:text="Display Name"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Saved Albums"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginLeft="19dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/library_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingBottom="16dp" />
+
+            <ProgressBar
+                android:id="@+id/loading_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/no_library_prompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:visibility="gone"
+                android:textColor="@color/white"
+                android:text="Nothing inside your library!"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <FrameLayout
+        android:id="@+id/bottom_nav_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <include layout="@layout/bottom_nav_layout" />
+    </FrameLayout>
+
+</RelativeLayout>

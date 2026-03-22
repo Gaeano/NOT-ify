@@ -5,17 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.spotifyclone.Pages.HomePage;
 import com.example.spotifyclone.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 
 
 public class SignUp extends AppCompatActivity {
@@ -28,13 +23,14 @@ public class SignUp extends AppCompatActivity {
         EditText passwordEditText = findViewById(R.id.passwordEditText);
         Button nextBtn = findViewById(R.id.nextBtn);
         Button backBtn = findViewById(R.id.backBtn);
+        ProgressBar loadingIndicator = findViewById(R.id.loadingIndicator);
 
 
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SignUp.this, signuplogin.class));
+                startActivity(new Intent(SignUp.this, openingPage.class));
             }
         });
 
@@ -44,16 +40,24 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
+                loadingIndicator.setVisibility(View.VISIBLE);
+                nextBtn.setEnabled(false);
+
                 if (email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(SignUp.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                    loadingIndicator.setVisibility(View.GONE);
+                    nextBtn.setEnabled(true);
                     return;
                 }
 
                 if (password.length() < 7){
                     Toast.makeText(SignUp.this, "Password must be at least 7 characters", Toast.LENGTH_SHORT).show();
+                    loadingIndicator.setVisibility(View.GONE);
+                    nextBtn.setEnabled(true);
                     return;
                 }
 

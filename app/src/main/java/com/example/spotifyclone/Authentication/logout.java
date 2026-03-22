@@ -14,7 +14,7 @@ public class logout extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(logout.this, signuplogin.class);
+        Intent intent = new Intent(logout.this, openingPage.class);
         startActivity(intent);
     }
 

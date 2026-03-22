@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Base.Theme.SpotifyClone"
+    tools:context=".Pages.albumDetailsPage">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_nav_container"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:padding="16dp">
+
+                <Button
+                    android:id="@+id/backBtn"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:backgroundTint="@android:color/transparent"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    android:padding="0dp"
+                    android:text="&lt;"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/album_cover"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_background" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="24dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/album_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FFFFFF"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        tools:text="Album Title" />
+
+                    <TextView
+                        android:id="@+id/album_artist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="#B3B3B3"
+                        android:textSize="16sp"
+                        tools:text="Artist Name" />
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/saveAlbumBtn"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/favorite_off_24px" />
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/tracklistProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                android:indeterminateTint="@color/green" />
+
+            <TextView
+                android:id="@+id/no_list_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Results not Found"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:textColor="#D30D0D"/>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tracklistRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:clipToPadding="false"
+                android:visibility="gone"
+                android:paddingBottom="20dp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <FrameLayout
+        android:id="@+id/bottom_nav_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <include layout="@layout/bottom_nav_layout" />
+    </FrameLayout>
+
+</RelativeLayout>

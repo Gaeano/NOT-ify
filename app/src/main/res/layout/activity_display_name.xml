@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/blackBg"
+    android:theme="@style/Base.Theme.SpotifyClone"
     tools:context=".Authentication.displayName">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="40dp"
         android:layout_gravity="center"
         android:orientation="horizontal">
 
@@ -61,10 +61,12 @@
             android:layout_height="43dp"
             android:background="@drawable/rounded_input_bg"
             android:ems="10"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:textColor="@color/white"
             android:inputType="text"
-            android:layout_marginBottom="4dp"
-            />
+            android:layout_marginBottom="4dp" />
+
 
         <TextView
             android:id="@+id/displaynamePrompt"
@@ -78,6 +80,14 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
+
+        <ProgressBar
+            android:id="@+id/loadingIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            style="@style/Widget.AppCompat.ProgressBar" />
 
 
         <Button

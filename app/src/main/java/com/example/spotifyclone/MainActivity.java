@@ -6,8 +6,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.spotifyclone.Authentication.signuplogin;
-import com.example.spotifyclone.Pages.HomePage;
+import com.example.spotifyclone.Authentication.openingPage;
+import com.example.spotifyclone.Pages.homePage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -20,10 +20,10 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if(currentUser != null){
-            Intent intent = new Intent(MainActivity.this, HomePage.class);
+            Intent intent = new Intent(MainActivity.this, homePage.class);
             startActivity(intent);
         } else {
-            Intent intent = new Intent(MainActivity.this, signuplogin.class);
+            Intent intent = new Intent(MainActivity.this, openingPage.class);
             Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
             startActivity(intent);
         }

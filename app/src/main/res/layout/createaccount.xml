@@ -5,100 +5,117 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/blackBg">
+    android:theme="@style/Base.Theme.SpotifyClone">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
+        android:paddingHorizontal="10dp">
 
         <Button
             android:id="@+id/backBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:backgroundTint="@color/blackBg"
             android:text="&lt;"
             android:textColor="@color/greyBg"
-            android:layout_marginRight="65dp"
-            android:textSize="25sp"
-            />
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/createaccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:layout_centerInParent="true"
             android:text="Create account"
-            android:layout_gravity="center"
-            android:textStyle="bold"
-             />
-    </LinearLayout>
-
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="10dp">
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="32dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/emailPrompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:text="What's your email?"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="20sp" />
-
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/emailEditText"
-            android:layout_width="378dp"
-            android:layout_height="43dp"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/rounded_input_bg"
             android:ems="10"
-            android:textColor="@color/white"
-            android:inputType="text"
-            android:layout_marginBottom="20dp"
-             />
+            android:inputType="textEmailAddress"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/passwordPrompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create a Password"
+            android:layout_marginBottom="10dp"
+            android:text="Create a password"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/passwordEditText"
-            android:layout_width="378dp"
-            android:layout_height="43dp"
-            android:background="@drawable/rounded_input_bg"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:textColor="@color/white" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/white">
+
+            <EditText
+                android:id="@+id/passwordEditText"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:background="@drawable/rounded_input_bg"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:paddingStart="12dp"
+                android:paddingEnd="48dp"
+                android:textColor="@color/white" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <ProgressBar
+            android:id="@+id/loadingIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            style="@style/Widget.AppCompat.ProgressBar" />
+
 
         <Button
             android:id="@+id/nextBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/grey"
-            android:text="Next"
-            android:layout_marginTop="20dp"
             android:layout_gravity="center"
-            android:textColor="@color/black"/>
-
+            android:layout_marginTop="32dp"
+            android:backgroundTint="@color/grey"
+            android:paddingStart="48dp"
+            android:paddingEnd="48dp"
+            android:text="Next"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
     </LinearLayout>
-
-
-
-
-
 
 </LinearLayout>

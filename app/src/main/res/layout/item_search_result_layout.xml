@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="8dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/searchResultImage"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:scaleType="centerCrop"
+        android:background="#282828"
+        android:contentDescription="Album Cover" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/searchResultTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Song Title"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/searchResultSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Type • Artist"
+            android:textColor="#B3B3B3"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+    </LinearLayout>
+
+</LinearLayout>
