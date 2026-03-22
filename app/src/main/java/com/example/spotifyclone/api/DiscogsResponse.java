@@ -28,6 +28,9 @@
             @SerializedName("master_id")
             public int masterId;
 
+            @SerializedName("type")
+            public String type;
+
         }
 
 

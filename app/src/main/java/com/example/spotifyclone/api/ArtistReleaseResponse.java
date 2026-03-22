@@ -1,5 +1,7 @@
 package com.example.spotifyclone.api;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class ArtistReleaseResponse {
@@ -11,5 +13,6 @@ public class ArtistReleaseResponse {
         public String type;
         public String thumb;
         public String artist;
+
     }
 }

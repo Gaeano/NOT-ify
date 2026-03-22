@@ -72,10 +72,11 @@ public class albumDetailsPage extends AppCompatActivity {
 
         //get passed data
         String fullTitle = getIntent().getStringExtra("albumTitle");
-        int masterId = getIntent().getIntExtra("masterId", 0);
+        int masterId = getIntent().getIntExtra("masterId", -1);
         String imageUrl = getIntent().getStringExtra("imageUrl");
+        String albumType = getIntent().getStringExtra("type");
 
-        if (masterId == 0) {
+        if (masterId == -1) {
             Log.e("album_details_activity", "Master ID is 0. The Intent didn't pass the data correctly");
         }
 
@@ -123,7 +124,7 @@ public class albumDetailsPage extends AppCompatActivity {
         trackListRecycler.setLayoutManager(linearLayoutManager);
         trackListRecycler.setAdapter(songListAdapter);
 
-        populateTrackList(new MusicFetcher(), songListAdapter, songList, masterId);
+        populateTrackList(new MusicFetcher(), songListAdapter, albumType, songList, masterId);
         //check if album is saved
         checkAlbumIfSaved(favoriteBtn, masterId);
 
@@ -146,14 +147,22 @@ public class albumDetailsPage extends AppCompatActivity {
         backBtn.setOnClickListener(v -> finish());
     }
 
-    private void populateTrackList(MusicFetcher fetcher, TracklistAdapter adapter, List<MasterReleaseResponse.Track> trackList, int masterId) {
-        fetcher.fetchTrackList(DiscogsToken, masterId, new TracklistCallback() {
+    private void populateTrackList(MusicFetcher fetcher, TracklistAdapter adapter, String albumType,  List<MasterReleaseResponse.Track> trackList, int masterId) {
+        fetcher.fetchTrackList(DiscogsToken, masterId, albumType, new TracklistCallback() {
             @Override
-            public void onSuccess(List<MasterReleaseResponse.Track> results) {
+            public void onSuccess(List<MasterReleaseResponse.Track> results, String highResImage) {
                 if (results != null) {
                     loadingIcon.setVisibility(View.GONE);
                     trackListRecycler.setVisibility(View.VISIBLE);
                     noResultPrompt.setVisibility(View.GONE);
+
+                    if (highResImage != null) {
+                        Glide.with(albumDetailsPage.this)
+                                .load(highResImage)
+                                .placeholder(R.drawable.ic_launcher_background)
+                                .into(coverImage);
+                    }
+
                     Log.d("album_details_activity", "Track list fetched successfully");
                     trackList.clear();
                     trackList.addAll(results);

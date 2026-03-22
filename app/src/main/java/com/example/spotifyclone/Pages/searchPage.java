@@ -71,6 +71,12 @@ public class searchPage extends AppCompatActivity implements SearchAdapter.OnCli
 
         SearchView searchView = findViewById(R.id.search_bar_container);
 
+        TextView searchText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        if (searchText != null) {
+            searchText.setTextColor(getResources().getColor(android.R.color.black));
+            searchText.setHintTextColor(getResources().getColor(android.R.color.darker_gray));
+        }
+
 
         //set up searchResults
         searchRecycler = findViewById(R.id.searchResultsRecyclerView);
@@ -144,6 +150,7 @@ public class searchPage extends AppCompatActivity implements SearchAdapter.OnCli
         intent.putExtra("albumTitle",clickedItem.title);
         intent.putExtra("masterId", clickedItem.id);
         intent.putExtra("imageUrl", clickedItem.coverImage);
+        intent.putExtra("type", clickedItem.type);
         startActivity(intent);
     }
 

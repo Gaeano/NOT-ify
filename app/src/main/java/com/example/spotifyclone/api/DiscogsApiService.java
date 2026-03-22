@@ -27,7 +27,12 @@ public interface DiscogsApiService {
     );
 
     @GET("releases/{id}")
-    Call<MasterReleaseResponse> retrieveTrackList(
+    Call<MasterReleaseResponse> getReleaseDetails(
+            @Path("id") int id,
+            @Query("token") String token
+    );
+    @GET("masters/{id}")
+    Call<MasterReleaseResponse> getMasterDetails(
             @Path("id") int id,
             @Query("token") String token
     );

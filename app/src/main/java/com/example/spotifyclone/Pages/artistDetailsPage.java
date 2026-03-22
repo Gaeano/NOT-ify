@@ -111,10 +111,13 @@ public class artistDetailsPage extends AppCompatActivity implements ArtistDetail
         String title = releaseList.get(position).title;
         String artist = artistNameTv.getText().toString();
 
-        String fullTitle = title + " - " + artist;
+        String fullTitle = artist + " - " + title;
         Intent intent = new Intent(this, albumDetailsPage.class);
         intent.putExtra("albumTitle", fullTitle);
         intent.putExtra("imageUrl", clickedRelease.thumb);
+
+        // Pass the safe ID to the next page
+        intent.putExtra("type", clickedRelease.type);
         intent.putExtra("masterId", clickedRelease.id);
 
         startActivity(intent);

@@ -54,16 +54,27 @@ public class MusicFetcher {
         });
     }
 
-    public void fetchTrackList(String token, int albumId, TracklistCallback callback) {
+    public void fetchTrackList(String token, int albumId, String type, TracklistCallback callback) {
         DiscogsApiService discogsApiService = RetrofitClient.getService();
 
-        Call<MasterReleaseResponse> call = discogsApiService.retrieveTrackList(albumId, token);
+        Call<MasterReleaseResponse> call;
+
+        if (type != null && type.equals("release")) {
+            call = discogsApiService.getReleaseDetails(albumId, token);
+        } else {
+            // Default to master if it's a main album
+            call = discogsApiService.getMasterDetails(albumId, token);
+        }
 
         call.enqueue(new Callback<MasterReleaseResponse>() {
             @Override
             public void onResponse(Call<MasterReleaseResponse> call, Response<MasterReleaseResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(response.body().tracklist);
+                    String highResImageUrl = null;
+                    if (response.body().images != null && !response.body().images.isEmpty()) {
+                        highResImageUrl = response.body().images.get(0).url;
+                    }
+                    callback.onSuccess(response.body().tracklist, highResImageUrl);
                 } else {
                     callback.onError("Error fetching music data" + response.code());
                 }
