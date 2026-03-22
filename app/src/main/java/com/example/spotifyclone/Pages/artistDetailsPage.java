@@ -58,7 +58,7 @@ public class artistDetailsPage extends AppCompatActivity implements ArtistDetail
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_artist_details);
 
-        backBtn = findViewById(R.id.back_btn);
+        backBtn = findViewById(R.id.back_btnA);
         artistImage = findViewById(R.id.artist_image);
         artistNameTv = findViewById(R.id.artist_name);
         artistDetailsTv = findViewById(R.id.artist_bio_text);
