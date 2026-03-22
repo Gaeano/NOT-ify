@@ -38,24 +38,24 @@ import java.util.Map;
 
 public class albumDetailsPage extends AppCompatActivity {
 
-    Button backBtn;
+    private Button backBtn;
 
-    TextView albumTitleTv, artistsNameTv, noResultPrompt;
+    private TextView albumTitleTv, artistsNameTv, noResultPrompt;
 
-    ImageButton favoriteBtn;
-    ImageView coverImage;
+    private ImageButton favoriteBtn;
+    private ImageView coverImage;
 
-    ProgressBar loadingIcon;
-    RecyclerView trackListRecycler;
+    private ProgressBar loadingIcon;
+    private RecyclerView trackListRecycler;
 
-    List<MasterReleaseResponse.Track> songList = new ArrayList<>();
+    private List<MasterReleaseResponse.Track> songList = new ArrayList<>();
 
-    TracklistAdapter songListAdapter;
+    private TracklistAdapter songListAdapter;
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    FirebaseUser user = auth.getCurrentUser();
-
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private FirebaseUser user = auth.getCurrentUser();
+    private Boolean isAlbumSaved = false;
     private static final String DiscogsToken = BuildConfig.DISCOGS_TOKEN;
 
 
@@ -128,7 +128,7 @@ public class albumDetailsPage extends AppCompatActivity {
         checkAlbumIfSaved(favoriteBtn, masterId);
 
         //save album functionality
-        savedAlbumFunctionality(favoriteBtn, fullTitle, masterId, imageUrl);
+        setupFavoriteToggle(favoriteBtn, fullTitle, masterId, imageUrl);
 
     }
 
@@ -163,13 +163,30 @@ public class albumDetailsPage extends AppCompatActivity {
         });
     }
 
-    private void savedAlbumFunctionality(ImageButton favoriteBtn, String albumTitle, int id, String imageUrl) {
+
+    private void setupFavoriteToggle(ImageButton favoriteBtn, String albumTitle, int id, String imageUrl) {
         favoriteBtn.setOnClickListener(v -> {
+            if (user == null) return;
+            String userId = user.getUid();
 
+            if (isAlbumSaved) {
+                // SCENARIO 1: It is currently saved, so we want to REMOVE it.
+                isAlbumSaved = false; // Update memory instantly
+                favoriteBtn.setImageResource(R.drawable.favorite_off_24px); // Turn heart gray
 
-            if (user != null) {
-                String userId = user.getUid();
-                favoriteBtn.setImageResource(R.drawable.favorite_on_24px);
+                db.collection("users").document(userId).collection("savedPlaylists").document(String.valueOf(id))
+                        .delete()
+                        .addOnSuccessListener(aVoid -> Log.d("album_details", "Removed!"))
+                        .addOnFailureListener(e -> {
+                            // If the internet fails, revert the button!
+                            isAlbumSaved = true;
+                            favoriteBtn.setImageResource(R.drawable.favorite_on_24px);
+                        });
+
+            } else {
+                // SCENARIO 2: It is NOT saved, so we want to ADD it.
+                isAlbumSaved = true; // Update memory instantly
+                favoriteBtn.setImageResource(R.drawable.favorite_on_24px); // Turn heart green
 
                 Map<String, Object> albumData = new HashMap<>();
                 albumData.put("id", id);
@@ -177,17 +194,13 @@ public class albumDetailsPage extends AppCompatActivity {
                 albumData.put("imageUrl", imageUrl);
                 albumData.put("timestamp", FieldValue.serverTimestamp());
 
-                db.collection("users")
-                        .document(userId)
-                        .collection("savedPlaylists")
-                        .document(String.valueOf(id))
+                db.collection("users").document(userId).collection("savedPlaylists").document(String.valueOf(id))
                         .set(albumData)
-                        .addOnSuccessListener(aVoid ->{
-                            Log.d("album_details_activity", "Album saved successfully to database title: " + albumTitle);
-
-                        })
-                        .addOnFailureListener(errorMessage ->{
-                            Log.e("album_details_activity", "Failed to save album to database: " + errorMessage.getMessage());
+                        .addOnSuccessListener(aVoid -> Log.d("album_details", "Saved!"))
+                        .addOnFailureListener(e -> {
+                            // If the internet fails, revert the button!
+                            isAlbumSaved = false;
+                            favoriteBtn.setImageResource(R.drawable.favorite_off_24px);
                         });
             }
         });
@@ -207,8 +220,10 @@ public class albumDetailsPage extends AppCompatActivity {
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()){
                             favoriteBtn.setImageResource(R.drawable.favorite_on_24px);
+                            isAlbumSaved = true;
                         } else {
                             favoriteBtn.setImageResource(R.drawable.favorite_off_24px);
+                            isAlbumSaved = false;
                         }
                     });
         }
