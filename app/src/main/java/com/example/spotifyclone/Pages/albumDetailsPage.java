@@ -129,7 +129,7 @@ public class albumDetailsPage extends AppCompatActivity {
         checkAlbumIfSaved(favoriteBtn, masterId);
 
         //save album functionality
-        setupFavoriteToggle(favoriteBtn, fullTitle, masterId, imageUrl);
+        setupFavoriteToggle(favoriteBtn, fullTitle, masterId, imageUrl, albumType);
 
         artistBtnFunctionality(artistsNameTv);
 
@@ -182,7 +182,7 @@ public class albumDetailsPage extends AppCompatActivity {
     }
 
 
-    private void setupFavoriteToggle(ImageButton favoriteBtn, String albumTitle, int id, String imageUrl) {
+    private void setupFavoriteToggle(ImageButton favoriteBtn, String albumTitle, int id, String imageUrl, String albumType) {
         favoriteBtn.setOnClickListener(v -> {
             if (user == null) return;
             String userId = user.getUid();
@@ -211,6 +211,7 @@ public class albumDetailsPage extends AppCompatActivity {
                 albumData.put("title", albumTitle);
                 albumData.put("imageUrl", imageUrl);
                 albumData.put("timestamp", FieldValue.serverTimestamp());
+                albumData.put("type", albumType);
 
                 db.collection("users").document(userId).collection("savedPlaylists").document(String.valueOf(id))
                         .set(albumData)

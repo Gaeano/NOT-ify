@@ -213,10 +213,6 @@ public class searchPage extends AppCompatActivity implements SearchAdapter.OnCli
                     recentList.clear();
                     Log.d(TAG, "Snapshot count: " + queryDocumentSnapshots.size()); // ADD THIS
 
-
-
-
-
                     if (queryDocumentSnapshots.isEmpty()){
                         nosearchesWarning.setVisibility(View.VISIBLE);
                         recentSearchesRecycler.setVisibility(View.GONE);
@@ -235,6 +231,7 @@ public class searchPage extends AppCompatActivity implements SearchAdapter.OnCli
 
                                 newResult.title = document.getString("title");
 
+                                newResult.type = document.getString("type");
                                 recentList.add(newResult);
                         }
                     }
@@ -263,6 +260,7 @@ public class searchPage extends AppCompatActivity implements SearchAdapter.OnCli
         recentSearch.put("title", title);
         recentSearch.put("imageUrl", imageUrl);
         recentSearch.put("timestamp", FieldValue.serverTimestamp());
+        recentSearch.put("type", item.type);
 
 
         db.collection("users")

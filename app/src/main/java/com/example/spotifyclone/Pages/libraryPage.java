@@ -75,6 +75,7 @@ public class libraryPage extends AppCompatActivity implements LibraryAdapter.OnI
         intent.putExtra("albumTitle", resultList.get(position).title);
         intent.putExtra("masterId", resultList.get(position).id);
         intent.putExtra("imageUrl", resultList.get(position).coverImage);
+        intent.putExtra("type", resultList.get(position).type);
         startActivity(intent);
     }
 
@@ -106,6 +107,7 @@ public class libraryPage extends AppCompatActivity implements LibraryAdapter.OnI
 
                                 result.coverImage = document.getString("imageUrl");
                                 result.title = document.getString("title");
+                                result.type = document.getString("type");
 
                                 Log.d("LibraryPage", "Result: " + result.title);
                                 resultList.add(result);
