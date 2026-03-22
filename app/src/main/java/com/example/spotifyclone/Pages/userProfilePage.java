@@ -77,7 +77,10 @@ public class userProfilePage extends AppCompatActivity implements LibraryAdapter
         backBtn.setOnClickListener(v -> finish());
 
 
-
+        settingsBtn.setOnClickListener(v ->{
+            Intent intent = new Intent(this, settingsPage.class);
+            startActivity(intent);
+        });
 
     }
 

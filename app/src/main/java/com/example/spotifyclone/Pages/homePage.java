@@ -4,15 +4,13 @@ package com.example.spotifyclone.Pages;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.spotifyclone.Authentication.openingPage;
 import com.example.spotifyclone.BuildConfig;
 import com.example.spotifyclone.Adapter.HomePageAdapter;
 import com.example.spotifyclone.R;
@@ -29,6 +27,8 @@ import java.util.List;
 public class homePage extends AppCompatActivity implements HomePageAdapter.OnClickItemListener {
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    private ImageButton settingsBtn;
 
     //POP
     private RecyclerView popRecyclerView;
@@ -48,7 +48,6 @@ public class homePage extends AppCompatActivity implements HomePageAdapter.OnCli
 
 
 
-    Button logOutButton;
     private static final String DiscogsToken = BuildConfig.DISCOGS_TOKEN;
 
     @Override
@@ -56,7 +55,8 @@ public class homePage extends AppCompatActivity implements HomePageAdapter.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage);
 
-        logOutButton = findViewById(R.id.logout);
+        settingsBtn = findViewById(R.id.settingsBtn);
+
 
         popRecyclerView = findViewById(R.id.popularPop);
         popAdapter = new HomePageAdapter(this, popList);
@@ -76,8 +76,11 @@ public class homePage extends AppCompatActivity implements HomePageAdapter.OnCli
         BottomNavigationView botNav = findViewById(R.id.bottom_navigation_layout);
         bottom_navigation.setupBottomNav(this, botNav, R.id.nav_home);
 
-    loadAllSections();
-    logout(logOutButton);
+        loadAllSections();
+        settingsBtn.setOnClickListener(v ->{
+            Intent intent = new Intent(this, settingsPage.class);
+            startActivity(intent);
+        });
 
     }
 
@@ -134,19 +137,7 @@ public class homePage extends AppCompatActivity implements HomePageAdapter.OnCli
 
         });
     }
-    public void logout (Button logoutBtn){
-        logoutBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
 
-                auth.signOut();
-                Log.d("HomePage", "User logged out");
-                Intent intent = new Intent(homePage.this, openingPage.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-    }
 
 
 }

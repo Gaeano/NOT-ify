@@ -175,18 +175,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <Button
-                android:id="@+id/logout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="32dp"
-                android:backgroundTint="#1DB954"
-                android:text="Log out"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
