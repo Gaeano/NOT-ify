@@ -90,12 +90,32 @@
                     android:src="@drawable/favorite_off_24px" />
             </LinearLayout>
 
+            <ProgressBar
+                android:id="@+id/tracklistProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                android:indeterminateTint="@color/green" />
+
+            <TextView
+                android:id="@+id/no_list_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Results not Found"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:textColor="#D30D0D"/>
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tracklistRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:clipToPadding="false"
+                android:visibility="gone"
                 android:paddingBottom="20dp" />
 
         </LinearLayout>
