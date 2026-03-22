@@ -6,7 +6,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MusicFetcher{
+public class MusicFetcher {
 
     public void fetchSearched(String query, String token, MusicDataCallback callback) {
         DiscogsApiService discogsApiService = RetrofitClient.getService();
@@ -75,5 +75,88 @@ public class MusicFetcher{
             }
         });
     }
-}
 
+    public void fetchArtist(String token, String artistName, ArtistSearchCallback callback) {
+        DiscogsApiService discogsApiService = RetrofitClient.getService();
+
+        Call<DiscogsResponse> call = discogsApiService.searchDatabase(artistName, "artist", token);
+
+        call.enqueue(new retrofit2.Callback<DiscogsResponse>() {
+            @Override
+            public void onResponse(Call<DiscogsResponse> call, Response<DiscogsResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    DiscogsResponse.Result artistResult = response.body().results.get(0);
+                    callback.onSuccess(artistResult);
+                } else {
+                    callback.onError("Error fetching artist data");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DiscogsResponse> call, Throwable t) {
+                callback.onError("Error fetching artist data");
+
+            }
+        });
+    }
+
+    public void fetchArtistDetails(String token, int artistId, ArtistDetailsCallback callback) {
+        DiscogsApiService discogsApiService = RetrofitClient.getService();
+
+        Call<ArtistProfileResponse> call = discogsApiService.getArtistProfile(artistId, token);
+
+        call.enqueue(new Callback<ArtistProfileResponse>() {
+
+            @Override
+            public void onResponse(Call<ArtistProfileResponse> call, Response<ArtistProfileResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String bio = response.body().profile;
+                    if (bio != null && !bio.isEmpty()) {
+                        String cleanBio = bio.replaceAll("\\[[a-zA-Z]=([^\\]]+)\\]", "$1");
+
+                        String imageUrl = null;
+
+                        if (response.body().images.get(0).uri != null & !response.body().images.get(0).uri.isEmpty()) {
+                            imageUrl = response.body().images.get(0).uri;
+                        }
+                        callback.onSuccess(cleanBio, imageUrl);
+                    } else {
+                        callback.onError("No biography available");
+                    }
+                } else {
+                    callback.onError("failed to fetch");
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArtistProfileResponse> call, Throwable t) {
+                callback.onError(t.getMessage());
+            }
+        });
+    }
+
+    public void fetchArtistReleases(String token, int artistId, ArtistReleasesCallback callback) {
+
+        DiscogsApiService discogsApiService = RetrofitClient.getService();
+
+        Call<ArtistReleaseResponse> call = discogsApiService.getArtistReleases(artistId, "year", "desc", token);
+
+        call.enqueue(new Callback<ArtistReleaseResponse>() {
+
+            @Override
+            public void onResponse(Call<ArtistReleaseResponse> call, Response<ArtistReleaseResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().releases != null) {
+                    callback.onSuccess(response.body().releases);
+                } else {
+                    callback.onError("Releases failed. HTTP Code: " + response.code());                }
+            }
+
+            @Override
+            public void onFailure(Call<ArtistReleaseResponse> call, Throwable t) {
+                callback.onError(t.getMessage());
+            }
+        });
+
+    }
+}

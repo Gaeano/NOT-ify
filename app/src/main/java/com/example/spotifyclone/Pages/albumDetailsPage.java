@@ -1,5 +1,6 @@
 package com.example.spotifyclone.Pages;
 
+import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -58,7 +59,8 @@ public class albumDetailsPage extends AppCompatActivity {
     private Boolean isAlbumSaved = false;
     private static final String DiscogsToken = BuildConfig.DISCOGS_TOKEN;
 
-
+    String albumTitle = "Unknown Album";
+    String artistsName = "Unknown Artist";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +79,6 @@ public class albumDetailsPage extends AppCompatActivity {
             Log.e("album_details_activity", "Master ID is 0. The Intent didn't pass the data correctly");
         }
 
-        String albumTitle = "Unknown Album";
-        String artistsName = "Unknown Artist";
 
         if (fullTitle != null && fullTitle.contains(" -")) {
             String[] parts = fullTitle.split(" - ", 2);
@@ -130,8 +130,17 @@ public class albumDetailsPage extends AppCompatActivity {
         //save album functionality
         setupFavoriteToggle(favoriteBtn, fullTitle, masterId, imageUrl);
 
+        artistBtnFunctionality(artistsNameTv);
+
     }
 
+    private void artistBtnFunctionality(TextView artistBtn) {
+        artistBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(this, artistDetailsPage.class);
+            intent.putExtra("artistName", artistsName);
+            startActivity(intent);
+        });
+    }
 
     private void backButtonFunctionality(Button backBtn) {
         backBtn.setOnClickListener(v -> finish());
@@ -206,10 +215,10 @@ public class albumDetailsPage extends AppCompatActivity {
         });
     }
 
-    private void checkAlbumIfSaved(ImageButton favoriteBtn, int id){
+    private void checkAlbumIfSaved(ImageButton favoriteBtn, int id) {
         List<DiscogsResponse.Result> savedList = new ArrayList<>();
 
-        if (user != null){
+        if (user != null) {
             String userId = user.getUid();
 
             db.collection("users")
@@ -218,7 +227,7 @@ public class albumDetailsPage extends AppCompatActivity {
                     .document(String.valueOf(id))
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()){
+                        if (documentSnapshot.exists()) {
                             favoriteBtn.setImageResource(R.drawable.favorite_on_24px);
                             isAlbumSaved = true;
                         } else {

@@ -15,7 +15,6 @@ public interface DiscogsApiService {
             @Query("token") String token
     );
 
-    @Headers("User-Agent: SpotifyCloneApp/1.0")
     @GET("database/search")
     Call<DiscogsResponse> searchByGenre(
             @Query("q") String query,
@@ -27,12 +26,25 @@ public interface DiscogsApiService {
             @Query("sort_order") String sortOrder
     );
 
-    @Headers("User-Agent: SpotifyCloneApp/1.0")
     @GET("releases/{id}")
     Call<MasterReleaseResponse> retrieveTrackList(
             @Path("id") int id,
             @Query("token") String token
     );
 
+    @GET("/artists/{artist_id}")
+    Call<ArtistProfileResponse> getArtistProfile(
+            @Path("artist_id") int artistId,
+            @Query("token") String token
+    );
+
+    @GET("/artists/{artist_id}/releases")
+    Call<ArtistReleaseResponse> getArtistReleases(
+            @Path("artist_id") int artistId,
+            @Query("sort") String sort,
+            @Query("sort_order") String order,
+            @Query("token") String token
+
+    );
 
 }

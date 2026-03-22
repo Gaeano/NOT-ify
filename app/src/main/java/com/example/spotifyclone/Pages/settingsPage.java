@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class settingsPage extends AppCompatActivity {
-    private Button logoutBtn;
+    private Button logoutBtn, backBtn;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     private TextView displayName;
@@ -34,6 +34,10 @@ public class settingsPage extends AppCompatActivity {
         logoutBtn = findViewById(R.id.logout);
         displayName = findViewById(R.id.profile_name);
         userProfileBtn = findViewById(R.id.profile_section_btn);
+        backBtn = findViewById(R.id.back_btn);
+
+        backBtn.setOnClickListener(v -> finish());
+
 
         displayName.setText(user.getDisplayName());
 
@@ -41,6 +45,7 @@ public class settingsPage extends AppCompatActivity {
             Intent intent = new Intent(settingsPage.this, userProfilePage.class);
             startActivity(intent);
         });
+
 
 
 

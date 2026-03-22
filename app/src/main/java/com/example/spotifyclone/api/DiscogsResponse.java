@@ -1,34 +1,35 @@
-package com.example.spotifyclone.api;
+    package com.example.spotifyclone.api;
 
 
-import com.google.gson.annotations.SerializedName;
-import java.util.List;
+    import com.google.gson.annotations.SerializedName;
+    import java.util.List;
 
-public class DiscogsResponse {
+    public class DiscogsResponse {
 
-    @SerializedName("results")
-    public List<Result> results;
+        @SerializedName("results")
+        public List<Result> results;
 
-    public static class Result{
-        @SerializedName("id")
-        public int id;
+        public static class Result{
+            @SerializedName("id")
+            public int id;
 
-        @SerializedName("title")
-        public String title;
+            @SerializedName("title")
+            public String title;
 
-        @SerializedName("thumb")
-        public String coverImage;
+            @SerializedName("cover_image")
+            public String coverImage;
 
-        @SerializedName("artists")
-        public String artist;
+            @SerializedName("artists")
+            public String artist;
 
-        @SerializedName("year")
-        public String year;
+            @SerializedName("year")
+            public String year;
 
-        @SerializedName("master_id")
-        public int masterId;
+            @SerializedName("master_id")
+            public int masterId;
+
+        }
+
+
+
     }
-
-
-
-}
